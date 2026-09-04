@@ -153,7 +153,9 @@ h2.display em{color:var(--ember);font-style:italic}
 .album .info .blurb em{color:var(--flame);font-style:italic}
 .tracks{list-style:none;padding:0;margin:0 0 28px;border-top:1px solid rgba(200,122,20,.18)}
 .tracks li{display:flex;align-items:baseline;gap:16px;padding:14px 0;border-bottom:1px solid rgba(200,122,20,.18);font-size:14.5px;transition:padding .25s,color .25s;cursor:default}
-.tracks li:hover{padding-left:12px;color:var(--gold)}
+.tracks li.has-video,.tracks li.has-preview{cursor:pointer}
+.tracks li.has-video:hover,.tracks li.has-video:focus-visible,.tracks li.has-preview:hover,.tracks li.has-preview:focus-visible{padding-left:12px;color:var(--gold)}
+.tracks li.has-video:focus-visible,.tracks li.has-preview:focus-visible{outline:2px solid var(--ember);outline-offset:2px}
 .tracks .n{font-family:var(--mono);color:var(--ash);min-width:28px;font-size:12px;letter-spacing:.1em}
 .tracks .t{flex:1;color:var(--paper)}
 .tracks .tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--ember);border:1px solid var(--ember);padding:3px 10px}
@@ -311,14 +313,14 @@ footer .hg-bg{position:absolute;top:60px;left:50%;transform:translateX(-50%);wid
         <h3>Quema mi garganta</h3>
         <p class="blurb">Un disco que no pide permiso. Seis canciones para perseguidores, ídolos rotos y voces que se rompen cantando. Acompañado del manifiesto <em>Tragedia y fiesta</em>.</p>
         <ol class="tracks">
-          <li><span class="n">01</span><span class="t">El perseguidor</span><span class="tag">Video</span></li>
-          <li><span class="n">02</span><span class="t">Sangre joven, sangre fresca</span></li>
-          <li><span class="n">03</span><span class="t">Ídolos</span></li>
-          <li><span class="n">04</span><span class="t">Aúlla</span></li>
-          <li><span class="n">05</span><span class="t">Así que quieres ser cantante</span></li>
+          <li class="has-video" role="button" tabindex="0" aria-label="Ver videoclip: El perseguidor" onclick="jumpToVideo('vid-perseguidor')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();jumpToVideo('vid-perseguidor');}"><span class="n">01</span><span class="t">El perseguidor</span><span class="tag">Video</span></li>
+          <li class="has-preview" role="button" tabindex="0" aria-label="Escuchar preview: Sangre joven, sangre fresca" onclick="playTrackPreview('embed-quema','69zy3B1NYAz2sQbERaQH6D')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playTrackPreview('embed-quema','69zy3B1NYAz2sQbERaQH6D');}"><span class="n">02</span><span class="t">Sangre joven, sangre fresca</span></li>
+          <li class="has-preview" role="button" tabindex="0" aria-label="Escuchar preview: Ídolos" onclick="playTrackPreview('embed-quema','373ALYMKLKjBYff0d98RNt')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playTrackPreview('embed-quema','373ALYMKLKjBYff0d98RNt');}"><span class="n">03</span><span class="t">Ídolos</span></li>
+          <li class="has-preview" role="button" tabindex="0" aria-label="Escuchar preview: Aúlla" onclick="playTrackPreview('embed-quema','3fcddgNcCLThq9EDkulbQZ')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playTrackPreview('embed-quema','3fcddgNcCLThq9EDkulbQZ');}"><span class="n">04</span><span class="t">Aúlla</span></li>
+          <li class="has-preview" role="button" tabindex="0" aria-label="Escuchar preview: Así que quieres ser cantante" onclick="playTrackPreview('embed-quema','1O7cs96XNjwr5vLyE9AIoX')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playTrackPreview('embed-quema','1O7cs96XNjwr5vLyE9AIoX');}"><span class="n">05</span><span class="t">Así que quieres ser cantante</span></li>
           <li><span class="n">06</span><span class="t">Título desconocido</span></li>
         </ol>
-        <div class="spotify-embed">
+        <div class="spotify-embed" id="embed-quema">
           <iframe loading="lazy" src="https://open.spotify.com/embed/album/4OzHuVOdUnm9eMjAJvbSN5?utm_source=generator&theme=0" width="100%" height="352" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowtransparency="true"></iframe>
         </div>
       </div>
@@ -337,13 +339,13 @@ footer .hg-bg{position:absolute;top:60px;left:50%;transform:translateX(-50%);wid
         <h3>Acantilados y otros accidentes</h3>
         <p class="blurb">El disco de la caída. Cinco accidentes en orden de aparición: prácticas de vuelo que terminan mal, cuerpos, mitologías domésticas, refugios que no aguantan la tormenta.</p>
         <ol class="tracks">
-          <li><span class="n">01</span><span class="t">Prácticas de vuelo</span></li>
-          <li><span class="n">02</span><span class="t">El cuerpo</span><span class="tag">Video</span></li>
-          <li><span class="n">03</span><span class="t">Minotauro</span></li>
+          <li class="has-preview" role="button" tabindex="0" aria-label="Escuchar preview: Prácticas de vuelo" onclick="playTrackPreview('embed-acantilados','2SBYZNtRrv9IKgcEfxZxDy')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playTrackPreview('embed-acantilados','2SBYZNtRrv9IKgcEfxZxDy');}"><span class="n">01</span><span class="t">Prácticas de vuelo</span></li>
+          <li class="has-video" role="button" tabindex="0" aria-label="Ver videoclip: El cuerpo" onclick="jumpToVideo('vid-elcuerpo')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();jumpToVideo('vid-elcuerpo');}"><span class="n">02</span><span class="t">El cuerpo</span><span class="tag">Video</span></li>
+          <li class="has-preview" role="button" tabindex="0" aria-label="Escuchar preview: Minotauro" onclick="playTrackPreview('embed-acantilados','0ZmX40fJXNRCj9jLJzjJv3')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playTrackPreview('embed-acantilados','0ZmX40fJXNRCj9jLJzjJv3');}"><span class="n">03</span><span class="t">Minotauro</span></li>
           <li><span class="n">04</span><span class="t">Mi refugio bajo la tormenta</span></li>
-          <li><span class="n">05</span><span class="t">Rómpase en caso de incendio</span><span class="tag">Video</span></li>
+          <li class="has-video" role="button" tabindex="0" aria-label="Ver videoclip: Rómpase en caso de incendio" onclick="jumpToVideo('vid-rompase')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();jumpToVideo('vid-rompase');}"><span class="n">05</span><span class="t">Rómpase en caso de incendio</span><span class="tag">Video</span></li>
         </ol>
-        <div class="spotify-embed">
+        <div class="spotify-embed" id="embed-acantilados">
           <iframe loading="lazy" src="https://open.spotify.com/embed/album/2WG5BQjzIbxOAu6kSiOtbx?utm_source=generator&theme=0" width="100%" height="352" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowtransparency="true"></iframe>
         </div>
       </div>
@@ -362,13 +364,13 @@ footer .hg-bg{position:absolute;top:60px;left:50%;transform:translateX(-50%);wid
         <h3>Marina</h3>
         <p class="blurb">El principio. Un mar embravecido, una reina con risa de metal, naufragios y olas que rompen. El debut donde Perdido Godot encontró su voz en el agua.</p>
         <ol class="tracks">
-          <li><span class="n">01</span><span class="t">Reina del mar</span></li>
-          <li><span class="n">02</span><span class="t">Desaparece</span></li>
-          <li><span class="n">03</span><span class="t">Corazón en las tinieblas</span></li>
-          <li><span class="n">04</span><span class="t">Cuando rompe la ola</span></li>
-          <li><span class="n">05</span><span class="t">Naufragio</span></li>
+          <li class="has-preview" role="button" tabindex="0" aria-label="Escuchar preview: Reina del mar" onclick="playTrackPreview('embed-marina','1DXEKv1PsBPhmP6vmw6crP')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playTrackPreview('embed-marina','1DXEKv1PsBPhmP6vmw6crP');}"><span class="n">01</span><span class="t">Reina del mar</span></li>
+          <li class="has-preview" role="button" tabindex="0" aria-label="Escuchar preview: Desaparece" onclick="playTrackPreview('embed-marina','5dWStqRg34Dabn1VTUWw7C')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playTrackPreview('embed-marina','5dWStqRg34Dabn1VTUWw7C');}"><span class="n">02</span><span class="t">Desaparece</span></li>
+          <li class="has-preview" role="button" tabindex="0" aria-label="Escuchar preview: Corazón en las tinieblas" onclick="playTrackPreview('embed-marina','1X14YqsbUNgXYGuBdzspcs')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playTrackPreview('embed-marina','1X14YqsbUNgXYGuBdzspcs');}"><span class="n">03</span><span class="t">Corazón en las tinieblas</span></li>
+          <li class="has-preview" role="button" tabindex="0" aria-label="Escuchar preview: Cuando rompe la ola" onclick="playTrackPreview('embed-marina','7uZLYBIzS7tQqETZ31ackU')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playTrackPreview('embed-marina','7uZLYBIzS7tQqETZ31ackU');}"><span class="n">04</span><span class="t">Cuando rompe la ola</span></li>
+          <li class="has-preview" role="button" tabindex="0" aria-label="Escuchar preview: Naufragio" onclick="playTrackPreview('embed-marina','64hGQEofsO6ZNywGzC5qaF')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playTrackPreview('embed-marina','64hGQEofsO6ZNywGzC5qaF');}"><span class="n">05</span><span class="t">Naufragio</span></li>
         </ol>
-        <div class="spotify-embed">
+        <div class="spotify-embed" id="embed-marina">
           <iframe loading="lazy" src="https://open.spotify.com/embed/album/4fJW8S86vzDzPJuUWjri6W?utm_source=generator&theme=0" width="100%" height="352" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowtransparency="true"></iframe>
         </div>
       </div>
@@ -381,21 +383,21 @@ footer .hg-bg{position:absolute;top:60px;left:50%;transform:translateX(-50%);wid
   <div class="eyebrow">Videoclips</div>
   <h2 class="display">Imagen en <em>movimiento</em>.</h2>
   <div class="video-grid">
-    <div class="video reveal" data-yt="oNsWQeIX2os" role="button" tabindex="0" aria-label="Reproducir vídeo: El perseguidor" onclick="playVideo(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playVideo(this);}">
+    <div class="video reveal" id="vid-perseguidor" data-yt="oNsWQeIX2os" role="button" tabindex="0" aria-label="Reproducir vídeo: El perseguidor" onclick="playVideo(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playVideo(this);}">
       <div class="placeholder" style="background-image:url('assets/albums/quema.jpg')">
         <div class="album-tag">Quema mi garganta</div>
         <div class="name">El perseguidor</div>
       </div>
       <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
     </div>
-    <div class="video reveal d1" data-yt="CEoTOI3zi9c" role="button" tabindex="0" aria-label="Reproducir vídeo: Rómpase en caso de incendio" onclick="playVideo(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playVideo(this);}">
+    <div class="video reveal d1" id="vid-rompase" data-yt="CEoTOI3zi9c" role="button" tabindex="0" aria-label="Reproducir vídeo: Rómpase en caso de incendio" onclick="playVideo(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playVideo(this);}">
       <div class="placeholder" style="background-image:url('assets/albums/acantilados.jpg')">
         <div class="album-tag">Acantilados y otros accidentes</div>
         <div class="name">Rómpase en caso<br/>de incendio</div>
       </div>
       <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
     </div>
-    <div class="video reveal d2" data-yt="Gi70FF9XIEU" role="button" tabindex="0" aria-label="Reproducir vídeo: El cuerpo" onclick="playVideo(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playVideo(this);}">
+    <div class="video reveal d2" id="vid-elcuerpo" data-yt="Gi70FF9XIEU" role="button" tabindex="0" aria-label="Reproducir vídeo: El cuerpo" onclick="playVideo(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playVideo(this);}">
       <div class="placeholder" style="background-image:url('assets/albums/acantilados.jpg')">
         <div class="album-tag">Acantilados y otros accidentes</div>
         <div class="name">El cuerpo</div>
@@ -480,6 +482,24 @@ function playVideo(el){
   const id = el.dataset.yt;
   if(!id) return;
   el.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen title="${el.getAttribute('aria-label')||'Vídeo'}"></iframe>`;
+}
+
+function jumpToVideo(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.scrollIntoView({behavior:'smooth', block:'center'});
+  playVideo(el);
+}
+
+function playTrackPreview(embedId, trackId){
+  const container = document.getElementById(embedId);
+  if(!container) return;
+  const iframe = container.querySelector('iframe');
+  if(!iframe) return;
+  iframe.style.height = '152px';
+  iframe.height = '152';
+  iframe.src = `https://open.spotify.com/embed/track/${trackId}?utm_source=generator&theme=0`;
+  container.scrollIntoView({behavior:'smooth', block:'center'});
 }
 
 const bg = document.getElementById('bg');
