@@ -1,56 +1,477 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Perdido Godot — Tragedia y fiesta</title>
+<meta name="description" content="Perdido Godot — banda de rock. Tres discos: Marina, Acantilados y otros accidentes, y Quema mi garganta." />
+<meta name="theme-color" content="#140a04" />
+<meta property="og:title" content="Perdido Godot" />
+<meta property="og:description" content="Tragedia y fiesta. Tres discos, una herida abierta." />
+<meta property="og:image" content="https://perdidogodot.com/assets/albums/quema.jpg" />
+<meta property="og:url" content="https://perdidogodot.com" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Perdido Godot" />
+<meta name="twitter:description" content="Tragedia y fiesta. Tres discos, una herida abierta." />
+<meta name="twitter:image" content="https://perdidogodot.com/assets/albums/quema.jpg" />
+<link rel="canonical" href="https://perdidogodot.com/" />
+<link rel="icon" href="assets/brand/hourglass.png?v=3" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,400&family=JetBrains+Mono:wght@300;400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-body, html {
-  height: 100%;
-  margin: 0;
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  /* Quema mi garganta palette */
+  --ink:#0e0703;          /* deep warm-black */
+  --soot:#160b04;
+  --burn:#1f1208;         /* surface */
+  --ember:#c87a14;        /* primary ochre */
+  --flame:#e09a3d;        /* lighter ochre */
+  --gold:#f0c178;         /* highlight cream-gold */
+  --ash:#5b4733;          /* muted warm */
+  --bone:#e9d6b3;         /* cream */
+  --paper:#f4e9d2;
+  --blood:#a02214;        /* fire-red accent */
+  --serif:'Fraunces',serif;
+  --sans:'Inter',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+html,body{margin:0;padding:0;background:var(--ink);color:var(--paper);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{font-size:16px;line-height:1.55}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--ember);color:var(--ink)}
+
+/* paper texture grain */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.10;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.7 0 0 0 0 0.5 0 0 0 0 0.2 0 0 0 0.7 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+/* ambient warm vignette */
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:99;
+  background:radial-gradient(ellipse at 50% 0%,rgba(200,122,20,.10),transparent 50%),radial-gradient(ellipse at 50% 100%,rgba(160,34,20,.08),transparent 60%);
 }
 
-.bgimg {
-  background-image: url('/PerdidoGodot.JPG');
-  height: 100%;
-  background-position: center;
-  background-size: cover;
-  position: relative;
-  color: white;
-  font-family: "Courier New", Courier, monospace;
-  font-size: 25px;
+/* ===== NAV ===== */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:16px 22px;backdrop-filter:blur(12px) saturate(1.2);background:linear-gradient(180deg,rgba(14,7,3,.85),rgba(14,7,3,.3));transition:background .3s}
+.nav.scrolled{background:rgba(14,7,3,.92);border-bottom:1px solid rgba(200,122,20,.15)}
+.nav .mark{display:flex;align-items:center;gap:10px}
+.nav .mark img{height:30px;width:auto;opacity:.95}
+.nav .links{display:none;gap:32px;font-size:11px;text-transform:uppercase;letter-spacing:.25em;color:var(--bone);font-family:var(--mono)}
+.nav .links a{position:relative;padding:6px 0;opacity:.7;transition:opacity .2s,color .2s}
+.nav .links a:hover{opacity:1;color:var(--flame)}
+.nav .links a::after{content:"";position:absolute;left:50%;bottom:0;height:1px;width:0;background:var(--ember);transition:width .3s,left .3s}
+.nav .links a:hover::after{width:100%;left:0}
+.nav .cta{display:none;font-size:11px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;border:1px solid var(--ember);color:var(--flame);padding:10px 18px;border-radius:0;transition:all .25s;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+.nav .cta:hover{background:var(--ember);color:var(--ink)}
+.burger{display:flex;flex-direction:column;gap:5px;width:30px;cursor:pointer;background:none;border:0;padding:6px;z-index:60}
+.burger span{height:1.5px;background:var(--bone);display:block;transition:transform .3s,opacity .25s}
+.burger.x span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.burger.x span:nth-child(2){opacity:0}
+.burger.x span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.mobile-menu{position:fixed;inset:0;background:var(--ink);z-index:55;transform:translateY(-100%);transition:transform .5s cubic-bezier(.65,.05,.36,1);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;font-family:var(--serif);font-size:38px;font-style:italic;font-weight:300}
+.mobile-menu.open{transform:translateY(0)}
+.mobile-menu a{padding:8px 4px;color:var(--bone);transition:color .2s}
+.mobile-menu a:hover{color:var(--ember)}
+.mobile-menu .small{font-family:var(--mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--ash);margin-top:36px;display:flex;gap:26px}
+.mobile-menu .hg{width:48px;opacity:.5;margin-bottom:20px}
+@media(min-width:900px){
+  .nav{padding:22px 44px}
+  .nav .mark img{height:36px}
+  .nav .links,.nav .cta{display:flex;align-items:center}
+  .burger{display:none}
 }
 
-.topleft {
-  position: absolute;
-  top: 0;
-  left: 16px;
-}
+/* ===== HERO ===== */
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:120px 22px 320px;overflow:hidden;isolation:isolate;text-align:center}
+@media(min-width:900px){.hero{justify-content:center;padding:140px 60px 140px}}
+.hero .bg{position:absolute;inset:0;z-index:-3;background:var(--ink)}
+.hero .bg img{width:100%;height:100%;object-fit:cover;object-position:center 30%;filter:sepia(.32) hue-rotate(-10deg) saturate(1.35) brightness(.74) contrast(1.1)}
+@media(max-width:700px){.hero .bg img{object-position:center 25%}}
+/* burnt texture overlay using quema cover (subtle color cast) */
+.hero .texture{position:absolute;inset:0;z-index:-2;background-image:url('assets/albums/quema.jpg');background-size:cover;background-position:center;mix-blend-mode:multiply;opacity:.45}
+/* edge-only vignette, keeps middle bright */
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 50% 45%,transparent 0%,transparent 35%,rgba(14,7,3,.55) 80%,rgba(14,7,3,.95) 100%),linear-gradient(180deg,rgba(14,7,3,.55) 0%,transparent 22%,transparent 70%,rgba(14,7,3,1) 100%)}
 
-.bottomleft {
-  position: absolute;
-  bottom: 0;
-  left: 16px;
-}
+.hero .meta{position:absolute;bottom:110px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:var(--flame);display:inline-flex;align-items:center;gap:12px;padding:7px 16px;border:1px solid rgba(200,122,20,.4);background:rgba(14,7,3,.6);backdrop-filter:blur(6px);white-space:nowrap;z-index:2}
+@media(min-width:900px){.hero .meta{bottom:110px;font-size:11px;letter-spacing:.45em;padding:8px 18px;gap:14px}}
+.hero .meta .dot{width:6px;height:6px;background:var(--blood);border-radius:50%;box-shadow:0 0 14px var(--blood);animation:pulse 2.4s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
 
-.middle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
-}
+.hero .wordmark{max-width:min(780px,88%);width:100%;margin:0 auto 24px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.7));animation:fadeUp 1.2s cubic-bezier(.2,.7,.2,1) both}
+@media(max-width:700px){.hero .wordmark{max-width:78%;margin-bottom:18px}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
 
-hr {
-  margin: auto;
-  width: 40%;
-}
+.hero h1{margin:0;font-size:0;height:0;overflow:hidden;position:absolute}
+.hero .sub{font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(18px,3vw,26px);line-height:1.4;max-width:560px;color:var(--bone);margin:0 auto;animation:fadeUp 1.4s .2s cubic-bezier(.2,.7,.2,1) both}
+.hero .sub em{color:var(--ember);font-style:italic}
+
+.hero .scroll{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:var(--ash);display:flex;flex-direction:column;align-items:center;gap:12px}
+.hero .scroll .line{width:1px;height:38px;background:var(--ember);animation:scroll 2.4s infinite;transform-origin:top}
+@keyframes scroll{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@media(min-width:900px){.hero{padding:140px 60px 120px}}
+
+/* ===== section base ===== */
+section{position:relative;padding:90px 22px}
+@media(min-width:900px){section{padding:140px 60px}}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--ember);display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.eyebrow::before{content:"";width:36px;height:1px;background:var(--ember)}
+.eyebrow.center{justify-content:center}
+.eyebrow.center::after{content:"";width:36px;height:1px;background:var(--ember)}
+h2.display{font-family:var(--serif);font-weight:300;font-style:italic;font-size:clamp(42px,8vw,96px);line-height:.95;letter-spacing:-.03em;margin:0 0 30px;max-width:14ch;color:var(--paper)}
+h2.display em{color:var(--ember);font-style:italic}
+
+/* ===== MANIFESTO ===== */
+.manifesto{background:linear-gradient(180deg,var(--ink),var(--soot))}
+.manifesto .grid{display:grid;gap:40px;position:relative}
+.manifesto .hg-deco{position:absolute;top:-30px;right:0;width:110px;opacity:.06;pointer-events:none}
+.manifesto .lead{font-family:var(--serif);font-style:italic;font-size:clamp(24px,3.6vw,36px);line-height:1.3;font-weight:300;color:var(--paper)}
+.manifesto .lead em{color:var(--ember);font-style:italic;font-weight:400}
+.manifesto .body{font-size:15.5px;line-height:1.78;color:var(--bone);opacity:.85;max-width:55ch}
+.manifesto .body p+p{margin-top:1.1em}
+.manifesto .body em{color:var(--flame);font-style:italic}
+.read-pdf{display:inline-flex;align-items:center;gap:14px;margin-top:34px;font-family:var(--mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--paper);padding:14px 22px;border:1px solid var(--ember);background:rgba(200,122,20,.06);transition:all .3s;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}
+.read-pdf:hover{background:var(--ember);color:var(--ink);padding-left:30px}
+.read-pdf svg{width:14px;height:14px}
+@media(min-width:900px){.manifesto .grid{grid-template-columns:1.1fr 1fr;gap:80px;align-items:start}.manifesto .hg-deco{width:180px;opacity:.07}}
+
+/* ===== DISCOGRAPHY ===== */
+.disco{background:var(--soot);border-top:1px solid rgba(200,122,20,.1)}
+.album{margin-bottom:120px}
+.album:last-child{margin-bottom:0}
+.album .row{display:grid;gap:36px;align-items:start}
+.album .cover{position:relative;aspect-ratio:1/1;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.9),0 0 0 1px rgba(200,122,20,.15);border-radius:2px}
+.album .cover img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1);filter:saturate(1.05)}
+.album:hover .cover img{transform:scale(1.04)}
+.album .cover .num{position:absolute;top:14px;left:14px;font-family:var(--mono);font-size:10px;letter-spacing:.4em;color:var(--gold);background:rgba(14,7,3,.7);padding:7px 13px;backdrop-filter:blur(8px);border:1px solid rgba(200,122,20,.3)}
+.album .info .year{font-family:var(--mono);font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--ash);margin-bottom:14px}
+.album .info h3{font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(36px,6vw,62px);line-height:.95;letter-spacing:-.02em;margin:0 0 18px;color:var(--paper)}
+.album .info .blurb{font-size:15.5px;line-height:1.7;color:var(--bone);opacity:.82;max-width:46ch;margin-bottom:30px}
+.album .info .blurb em{color:var(--flame);font-style:italic}
+.tracks{list-style:none;padding:0;margin:0 0 28px;border-top:1px solid rgba(200,122,20,.18)}
+.tracks li{display:flex;align-items:baseline;gap:16px;padding:14px 0;border-bottom:1px solid rgba(200,122,20,.18);font-size:14.5px;transition:padding .25s,color .25s;cursor:default}
+.tracks li:hover{padding-left:12px;color:var(--gold)}
+.tracks .n{font-family:var(--mono);color:var(--ash);min-width:28px;font-size:12px;letter-spacing:.1em}
+.tracks .t{flex:1;color:var(--paper)}
+.tracks .tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.25em;text-transform:uppercase;color:var(--ember);border:1px solid var(--ember);padding:3px 10px}
+.spotify-embed{margin-top:6px;border-radius:12px;overflow:hidden;background:#191414;min-height:80px;box-shadow:0 12px 40px -10px rgba(0,0,0,.7)}
+.spotify-embed iframe{display:block;width:100%;border:0}
+@media(min-width:800px){.album .row{grid-template-columns:.95fr 1.05fr;gap:60px}}
+@media(min-width:1100px){.album .row{gap:100px}}
+.album.featured{padding:60px 22px 70px;margin:0 -22px 130px;background:radial-gradient(ellipse at 0% 0%,rgba(200,122,20,.10),transparent 60%),linear-gradient(180deg,rgba(31,18,8,.6),rgba(14,7,3,0));border-top:1px solid rgba(200,122,20,.3);border-bottom:1px solid rgba(200,122,20,.1);position:relative}
+.album.featured::before{content:"";position:absolute;top:0;left:0;width:80px;height:80px;border-top:1px solid var(--ember);border-left:1px solid var(--ember)}
+.album.featured::after{content:"";position:absolute;bottom:0;right:0;width:80px;height:80px;border-bottom:1px solid var(--ember);border-right:1px solid var(--ember)}
+@media(min-width:900px){.album.featured{padding:90px 60px 100px;margin:0 -60px 150px}}
+.album.featured .info h3{font-size:clamp(42px,7vw,76px)}
+.featured-tag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:var(--ink);background:var(--ember);padding:7px 14px;margin-bottom:20px;font-weight:500}
+
+/* ===== VIDEOS ===== */
+.videos{background:linear-gradient(180deg,var(--soot),var(--ink));border-top:1px solid rgba(200,122,20,.1)}
+.video-grid{display:grid;gap:24px}
+.video{position:relative;aspect-ratio:16/9;overflow:hidden;background:#000;cursor:pointer;border:1px solid rgba(200,122,20,.15);transition:transform .4s,border-color .4s,box-shadow .4s}
+.video:hover{border-color:var(--ember);transform:translateY(-4px);box-shadow:0 20px 60px -10px rgba(200,122,20,.25)}
+.video:focus-visible{outline:2px solid var(--ember);outline-offset:3px}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video .placeholder{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:22px;background-size:cover;background-position:center;transition:transform 1s cubic-bezier(.2,.7,.2,1);filter:sepia(.3) saturate(1.2)}
+.video:hover .placeholder{transform:scale(1.06)}
+.video .placeholder::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,7,3,.3),rgba(14,7,3,.92))}
+.video .placeholder>*{position:relative;z-index:1}
+.video .play{width:62px;height:62px;border-radius:50%;background:var(--ember);display:flex;align-items:center;justify-content:center;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;transition:transform .3s,background .3s;box-shadow:0 0 0 0 rgba(200,122,20,.5)}
+.video:hover .play{background:var(--gold);transform:translate(-50%,-50%) scale(1.15);box-shadow:0 0 0 18px rgba(200,122,20,0)}
+.video .play svg{width:22px;height:22px;fill:var(--ink);margin-left:4px}
+.video .name{font-family:var(--serif);font-style:italic;font-weight:300;font-size:24px;color:var(--paper);line-height:1.05;letter-spacing:-.01em}
+.video .album-tag{font-family:var(--mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--flame);margin-bottom:8px}
+@media(min-width:900px){.video-grid{grid-template-columns:repeat(3,1fr)}}
+
+/* ===== GALLERY ===== */
+.gallery{background:var(--ink);border-top:1px solid rgba(200,122,20,.1)}
+.gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.gallery-grid a{position:relative;overflow:hidden;aspect-ratio:3/4;background:var(--burn)}
+.gallery-grid a img{width:100%;height:100%;object-fit:cover;filter:sepia(.15) saturate(1.05);transition:transform 1.2s cubic-bezier(.2,.7,.2,1),filter .6s}
+.gallery-grid a:hover img{transform:scale(1.06);filter:sepia(0) saturate(1.15)}
+.gallery-grid a:nth-child(1){grid-column:span 2;aspect-ratio:4/5}
+.gallery-grid a:nth-child(6){grid-column:span 2;aspect-ratio:16/10}
+@media(min-width:800px){.gallery-grid{grid-template-columns:repeat(4,1fr);gap:8px}.gallery-grid a:nth-child(1){grid-column:span 2;grid-row:span 2;aspect-ratio:1/1}.gallery-grid a:nth-child(6){grid-column:span 2;aspect-ratio:3/2}}
+
+/* ===== LISTEN BAR ===== */
+.listen{background:linear-gradient(180deg,var(--ink),var(--soot));border-top:1px solid rgba(200,122,20,.1);text-align:center;position:relative;overflow:hidden}
+.listen::before{content:"";position:absolute;inset:auto 0 0 0;height:60%;background:url('assets/albums/quema.jpg') center/cover;opacity:.10;mix-blend-mode:screen;filter:blur(2px)}
+.listen>*{position:relative}
+.listen h2{font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(38px,7vw,76px);line-height:1.02;margin:0 0 20px;letter-spacing:-.02em;color:var(--paper)}
+.listen h2 em{color:var(--ember)}
+.listen p{color:var(--bone);opacity:.78;max-width:48ch;margin:0 auto 40px;font-size:16px}
+.platforms{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.platform{display:inline-flex;align-items:center;gap:12px;padding:16px 24px;border:1px solid rgba(200,122,20,.35);font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--paper);transition:all .3s;background:rgba(31,18,8,.4);backdrop-filter:blur(6px);clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%)}
+.platform:hover{background:var(--ember);border-color:var(--ember);color:var(--ink);transform:translateY(-3px)}
+.platform svg{width:18px;height:18px;fill:currentColor}
+
+/* ===== FOOTER ===== */
+footer{background:#070401;padding:90px 22px 40px;text-align:center;border-top:1px solid rgba(200,122,20,.15);position:relative}
+@media(min-width:900px){footer{padding:110px 60px 50px}}
+footer .mark-big{max-width:min(720px,90%);width:100%;margin:0 auto 28px;opacity:.92;filter:drop-shadow(0 0 40px rgba(200,122,20,.2))}
+footer .tagline{font-family:var(--serif);font-style:italic;font-weight:300;color:var(--ember);font-size:clamp(18px,2.4vw,22px);margin-bottom:50px;letter-spacing:.02em}
+footer .links{display:flex;flex-wrap:wrap;gap:24px;justify-content:center;margin-bottom:44px;font-family:var(--mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--bone)}
+footer .links a{opacity:.6;transition:opacity .2s,color .2s}
+footer .links a:hover{opacity:1;color:var(--ember)}
+footer .copy{font-family:var(--mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--ash);opacity:.7}
+footer .hg-bg{position:absolute;top:60px;left:50%;transform:translateX(-50%);width:120px;opacity:.04;pointer-events:none}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 1.1s cubic-bezier(.2,.7,.2,1),transform 1.1s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.1s}.reveal.d2{transition-delay:.2s}.reveal.d3{transition-delay:.3s}
 </style>
+</head>
 <body>
 
-<div class="bgimg">
-  <div class="middle">
-    <h1>Perdido Godot</h1>
-    <hr>
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a href="#" class="mark" aria-label="Perdido Godot inicio"><img src="assets/brand/wordmark-horizontal.png?v=3" alt="Perdido Godot" width="1735" height="189"/></a>
+  <div class="links">
+    <a href="#discografia">Discografía</a>
+    <a href="#videos">Videos</a>
+    <a href="#manifiesto">Manifiesto</a>
+    <a href="#galeria">Galería</a>
+  </div>
+  <a href="#escucha" class="cta">Escuchar</a>
+  <button class="burger" aria-label="Menú" id="bg"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mm">
+  <img class="hg" src="assets/brand/hourglass.png?v=3" alt="" width="764" height="882" loading="lazy"/>
+  <a href="#discografia">Discografía</a>
+  <a href="#videos">Videos</a>
+  <a href="#manifiesto">Manifiesto</a>
+  <a href="#galeria">Galería</a>
+  <a href="#escucha">Escuchar</a>
+  <div class="small">
+    <a href="https://open.spotify.com/artist/2G90MkWJD05690RzxunxrA" target="_blank" rel="noopener">Spotify</a>
+    <a href="https://www.youtube.com/@PerdidoGodot" target="_blank" rel="noopener">YouTube</a>
+    <a href="https://www.instagram.com/perdidogodot/" target="_blank" rel="noopener">Instagram</a>
   </div>
 </div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="bg"><img src="assets/hero.jpg" alt="" width="1920" height="2880" fetchpriority="high"/></div>
+  <div class="texture"></div>
+  <div class="meta"><span class="dot"></span><span>Tres discos · Una herida abierta</span></div>
+  <h1>Perdido Godot</h1>
+  <img class="wordmark" src="assets/brand/wordmark-horizontal.png?v=3" alt="Perdido Godot" width="1735" height="189"/>
+  <p class="sub">Tragedia y fiesta. Rock guitarrero hecho de naufragios, perseguidores y <em>cuerpos en llamas</em>.</p>
+  <div class="scroll"><span>Desliza</span><span class="line"></span></div>
+</header>
+
+<!-- MANIFESTO -->
+<section class="manifesto" id="manifiesto">
+  <div class="eyebrow">Manifiesto</div>
+  <div class="grid">
+    <img class="hg-deco" src="assets/brand/hourglass.png?v=3" alt="" width="764" height="882" loading="lazy"/>
+    <div>
+      <p class="lead reveal">Hay canciones que se cantan y otras que <em>queman la garganta</em>. Las nuestras llevan tiempo intentando hacer las dos cosas a la vez.</p>
+      <a href="assets/docs/tragedia-y-fiesta.pdf" target="_blank" rel="noopener" class="read-pdf">
+        Lee Tragedia y Fiesta
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+    <div class="body reveal d1">
+      <p>Perdido Godot nació como una espera. Tres discos después seguimos esperando algo que probablemente no llegue, y mientras tanto hacemos ruido. <em>Marina</em> fue un mar. <em>Acantilados y otros accidentes</em>, una caída. <em>Quema mi garganta</em> es lo que queda cuando uno ya no tiene nada que perder.</p>
+      <p>Esto no es una banda sonora. Es la insistencia de seguir aquí, escribiendo canciones como quien escribe cartas que nadie va a contestar — y aun así las firmas con todo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DISCOGRAPHY -->
+<section class="disco" id="discografia">
+  <div class="eyebrow">Discografía</div>
+  <h2 class="display">Tres discos.<br/>Una sola larga <em>conversación</em>.</h2>
+
+  <!-- LATEST: Quema mi garganta -->
+  <article class="album featured reveal">
+    <div class="row">
+      <div class="cover">
+        <span class="num">III · ÚLTIMO</span>
+        <img src="assets/albums/quema.jpg" alt="Portada de Quema mi garganta" width="1200" height="1200" loading="lazy"/>
+      </div>
+      <div class="info">
+        <span class="featured-tag">Último álbum</span>
+        <div class="year">2024</div>
+        <h3>Quema mi garganta</h3>
+        <p class="blurb">Un disco que no pide permiso. Seis canciones para perseguidores, ídolos rotos y voces que se rompen cantando. Acompañado del manifiesto <em>Tragedia y fiesta</em>.</p>
+        <ol class="tracks">
+          <li><span class="n">01</span><span class="t">El perseguidor</span><span class="tag">Video</span></li>
+          <li><span class="n">02</span><span class="t">Sangre joven, sangre fresca</span></li>
+          <li><span class="n">03</span><span class="t">Ídolos</span></li>
+          <li><span class="n">04</span><span class="t">Aúlla</span></li>
+          <li><span class="n">05</span><span class="t">Así que quieres ser cantante</span></li>
+          <li><span class="n">06</span><span class="t">Título desconocido</span></li>
+        </ol>
+        <div class="spotify-embed">
+          <iframe loading="lazy" src="https://open.spotify.com/embed/album/4OzHuVOdUnm9eMjAJvbSN5?utm_source=generator&theme=0" width="100%" height="352" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowtransparency="true"></iframe>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- Acantilados -->
+  <article class="album reveal">
+    <div class="row">
+      <div class="cover">
+        <span class="num">II</span>
+        <img src="assets/albums/acantilados.jpg" alt="Portada de Acantilados y otros accidentes" width="900" height="1200" loading="lazy"/>
+      </div>
+      <div class="info">
+        <div class="year">2019</div>
+        <h3>Acantilados y otros accidentes</h3>
+        <p class="blurb">El disco de la caída. Cinco accidentes en orden de aparición: prácticas de vuelo que terminan mal, cuerpos, mitologías domésticas, refugios que no aguantan la tormenta.</p>
+        <ol class="tracks">
+          <li><span class="n">01</span><span class="t">Prácticas de vuelo</span></li>
+          <li><span class="n">02</span><span class="t">El cuerpo</span><span class="tag">Video</span></li>
+          <li><span class="n">03</span><span class="t">Minotauro</span></li>
+          <li><span class="n">04</span><span class="t">Mi refugio bajo la tormenta</span></li>
+          <li><span class="n">05</span><span class="t">Rómpase en caso de incendio</span><span class="tag">Video</span></li>
+        </ol>
+        <div class="spotify-embed">
+          <iframe loading="lazy" src="https://open.spotify.com/embed/album/2WG5BQjzIbxOAu6kSiOtbx?utm_source=generator&theme=0" width="100%" height="352" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowtransparency="true"></iframe>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- Marina -->
+  <article class="album reveal">
+    <div class="row">
+      <div class="cover">
+        <span class="num">I · DEBUT</span>
+        <img src="assets/albums/marina.jpg" alt="Portada de Marina" width="1200" height="1200" loading="lazy"/>
+      </div>
+      <div class="info">
+        <div class="year">2016</div>
+        <h3>Marina</h3>
+        <p class="blurb">El principio. Un mar embravecido, una reina con risa de metal, naufragios y olas que rompen. El debut donde Perdido Godot encontró su voz en el agua.</p>
+        <ol class="tracks">
+          <li><span class="n">01</span><span class="t">Reina del mar</span></li>
+          <li><span class="n">02</span><span class="t">Desaparece</span></li>
+          <li><span class="n">03</span><span class="t">Corazón en las tinieblas</span></li>
+          <li><span class="n">04</span><span class="t">Cuando rompe la ola</span></li>
+          <li><span class="n">05</span><span class="t">Naufragio</span></li>
+        </ol>
+        <div class="spotify-embed">
+          <iframe loading="lazy" src="https://open.spotify.com/embed/album/4fJW8S86vzDzPJuUWjri6W?utm_source=generator&theme=0" width="100%" height="352" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowtransparency="true"></iframe>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- VIDEOS -->
+<section class="videos" id="videos">
+  <div class="eyebrow">Videoclips</div>
+  <h2 class="display">Imagen en <em>movimiento</em>.</h2>
+  <div class="video-grid">
+    <div class="video reveal" data-yt="oNsWQeIX2os" role="button" tabindex="0" aria-label="Reproducir vídeo: El perseguidor" onclick="playVideo(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playVideo(this);}">
+      <div class="placeholder" style="background-image:url('assets/albums/quema.jpg')">
+        <div class="album-tag">Quema mi garganta</div>
+        <div class="name">El perseguidor</div>
+      </div>
+      <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    </div>
+    <div class="video reveal d1" data-yt="CEoTOI3zi9c" role="button" tabindex="0" aria-label="Reproducir vídeo: Rómpase en caso de incendio" onclick="playVideo(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playVideo(this);}">
+      <div class="placeholder" style="background-image:url('assets/albums/acantilados.jpg')">
+        <div class="album-tag">Acantilados y otros accidentes</div>
+        <div class="name">Rómpase en caso<br/>de incendio</div>
+      </div>
+      <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    </div>
+    <div class="video reveal d2" data-yt="Gi70FF9XIEU" role="button" tabindex="0" aria-label="Reproducir vídeo: El cuerpo" onclick="playVideo(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();playVideo(this);}">
+      <div class="placeholder" style="background-image:url('assets/albums/acantilados.jpg')">
+        <div class="album-tag">Acantilados y otros accidentes</div>
+        <div class="name">El cuerpo</div>
+      </div>
+      <div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="galeria">
+  <div class="eyebrow">Galería</div>
+  <h2 class="display">Detrás del <em>ruido</em>.</h2>
+  <div class="gallery-grid">
+    <a href="assets/gallery/g5.jpg" target="_blank" class="reveal"><img src="assets/gallery/g5.jpg" alt="La banda Perdido Godot con una radio antigua en un estudio de madera" width="1067" height="1600" loading="lazy"/></a>
+    <a href="assets/gallery/g2.jpg" target="_blank" class="reveal d1"><img src="assets/gallery/g2.jpg" alt="Los seis miembros de Perdido Godot en una sesión de fotos" width="1067" height="1600" loading="lazy"/></a>
+    <a href="assets/gallery/g3.jpg" target="_blank" class="reveal d2"><img src="assets/gallery/g3.jpg" alt="Perdido Godot sosteniendo una radio antigua sobre sus cabezas" width="1067" height="1600" loading="lazy"/></a>
+    <a href="assets/gallery/g4.jpg" target="_blank" class="reveal d1"><img src="assets/gallery/g4.jpg" alt="Perdido Godot posando con una radio vintage en una sesión de fotos" width="1067" height="1600" loading="lazy"/></a>
+    <a href="assets/gallery/g1.jpg" target="_blank" class="reveal d2"><img src="assets/gallery/g1.jpg" alt="Miembro de Perdido Godot apoyado en una pared de madera" width="1067" height="1600" loading="lazy"/></a>
+    <a href="assets/gallery/g6.jpg" target="_blank" class="reveal d3"><img src="assets/gallery/g6.jpg" alt="Primer plano de Perdido Godot sosteniendo una radio antigua" width="1002" height="1600" loading="lazy"/></a>
+  </div>
+</section>
+
+<!-- LISTEN -->
+<section class="listen" id="escucha">
+  <div class="eyebrow center">Escucha</div>
+  <h2>En todas partes<br/>al <em>mismo tiempo</em>.</h2>
+  <p>Tres discos disponibles en tu plataforma. Síguenos para no perderte lo que viene.</p>
+  <div class="platforms">
+    <a class="platform" href="https://open.spotify.com/artist/2G90MkWJD05690RzxunxrA" target="_blank" rel="noopener" aria-label="Spotify">
+      <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0Zm5.5 17.32a.75.75 0 0 1-1.03.25c-2.82-1.72-6.36-2.11-10.54-1.16a.75.75 0 0 1-.33-1.46c4.57-1.04 8.5-.59 11.65 1.34.36.22.47.69.25 1.03Zm1.47-3.27a.93.93 0 0 1-1.28.31c-3.23-1.98-8.14-2.56-11.96-1.4a.93.93 0 1 1-.54-1.78c4.37-1.33 9.8-.69 13.51 1.59.44.27.58.84.27 1.28Zm.13-3.41C15.3 8.34 8.9 8.13 5.2 9.26a1.12 1.12 0 1 1-.65-2.15c4.26-1.3 11.32-1.04 15.78 1.6a1.12 1.12 0 0 1-1.13 1.93Z"/></svg>
+      Spotify
+    </a>
+    <a class="platform" href="https://www.youtube.com/@PerdidoGodot" target="_blank" rel="noopener" aria-label="YouTube">
+      <svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1c.5-1.9.5-5.8.5-5.8s0-3.9-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z"/></svg>
+      YouTube
+    </a>
+    <a class="platform" href="https://www.instagram.com/perdidogodot/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16ZM12 0C8.74 0 8.33.01 7.05.07c-1.28.06-2.15.26-2.91.55-.79.31-1.46.72-2.13 1.38C1.35 2.67.94 3.34.63 4.13c-.3.76-.49 1.63-.55 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.28.26 2.15.55 2.91.31.79.72 1.46 1.38 2.13.67.67 1.34 1.08 2.13 1.38.76.3 1.63.49 2.91.55C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.28-.06 2.15-.26 2.91-.55.79-.31 1.46-.72 2.13-1.38a5.86 5.86 0 0 0 1.38-2.13c.3-.76.49-1.63.55-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.28-.26-2.15-.55-2.91A5.86 5.86 0 0 0 22 1.99 5.86 5.86 0 0 0 19.87.61c-.76-.3-1.63-.49-2.91-.55C15.67.01 15.26 0 12 0Zm0 5.84A6.16 6.16 0 1 0 12 18.16 6.16 6.16 0 0 0 12 5.84Zm0 10.16A4 4 0 1 1 12 8a4 4 0 0 1 0 8Zm6.41-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0Z"/></svg>
+      Instagram
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <img class="hg-bg" src="assets/brand/hourglass.png?v=3" alt="" width="764" height="882" loading="lazy"/>
+  <img class="mark-big" src="assets/brand/wordmark-horizontal.png?v=3" alt="Perdido Godot" width="1735" height="189" loading="lazy"/>
+  <div class="tagline">— Tragedia y fiesta —</div>
+  <div class="links">
+    <a href="#discografia">Discografía</a>
+    <a href="#videos">Videos</a>
+    <a href="#manifiesto">Manifiesto</a>
+    <a href="#galeria">Galería</a>
+    <a href="assets/docs/tragedia-y-fiesta.pdf" target="_blank">Manifiesto PDF</a>
+    <a href="https://open.spotify.com/artist/2G90MkWJD05690RzxunxrA" target="_blank" rel="noopener">Spotify</a>
+    <a href="https://www.youtube.com/@PerdidoGodot" target="_blank" rel="noopener">YouTube</a>
+    <a href="https://www.instagram.com/perdidogodot/" target="_blank" rel="noopener">Instagram</a>
+  </div>
+  <div class="copy">© <span id="y"></span> Perdido Godot · perdidogodot.com</div>
+</footer>
+
+<script>
+document.getElementById('y').textContent = new Date().getFullYear();
+
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }});
+},{threshold:.12, rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+setTimeout(()=>document.querySelectorAll('.reveal:not(.in)').forEach(el=>{
+  const r=el.getBoundingClientRect(); if(r.top < innerHeight && r.bottom > 0) el.classList.add('in');
+}), 600);
+function playVideo(el){
+  const id = el.dataset.yt;
+  if(!id) return;
+  el.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen title="${el.getAttribute('aria-label')||'Vídeo'}"></iframe>`;
+}
+
+const bg = document.getElementById('bg');
+const mm = document.getElementById('mm');
+bg.addEventListener('click',()=>{ bg.classList.toggle('x'); mm.classList.toggle('open'); document.body.style.overflow = mm.classList.contains('open')?'hidden':''; });
+mm.addEventListener('click',e=>{ if(e.target.tagName==='A'){ mm.classList.remove('open'); bg.classList.remove('x'); document.body.style.overflow=''; }});
+
+const nav = document.getElementById('nav');
+addEventListener('scroll',()=>{ nav.classList.toggle('scrolled', scrollY>40); });
+</script>
 
 </body>
 </html>
